@@ -37,8 +37,8 @@ class RobotControl(System):
     def update(self, dt):
         # Iterate over every robot
         for e, robot in EntityManager.Instance().pairs_for_type(Robot):
-            if robot.bot._ttr <= 0:
+            if robot._ttr <= 0:
                 robot.bot.run()
-                robot.bot._emit()
+                robot._emit()
             else:
-                robot.bot._ttr -= 1
+                robot._ttr -= 1

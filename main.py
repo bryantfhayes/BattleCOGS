@@ -47,12 +47,12 @@ class BattleCOGS():
         # Create a bot and link back the entity so that user can reference other components
         bot = type()
         robot = EntityManager.Instance().create_entity(bot.symbol, z=10)
-        bot.entity = robot
+        bot.action = Robot(robot, bot)
 
         EntityManager.Instance().add_component(robot, Transform2D(Vector2D(x, y)))
         EntityManager.Instance().add_component(robot, Health())
         EntityManager.Instance().add_component(robot, Collider(COLLIDER_PLAYER, COLLIDER_PLAYER | COLLIDER_WALL))
-        EntityManager.Instance().add_component(robot, Robot(bot))
+        EntityManager.Instance().add_component(robot, bot.action)
         GameManager.Instance().message("Bryant entered the strange room hesitantly.", Colors.red)
 
         EventManager.Instance().fireEvent("EVENT_StatsUpdated", [{"HP: {0}/{1}".format(robot.components["Health"].health, robot.components["Health"].maxHealth) : {"color" : Colors.gold}},

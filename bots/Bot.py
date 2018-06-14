@@ -5,60 +5,23 @@ from util.Direction import Direction
 
 class Bot(object):
 	def __init__(self):
-		# Public variables
-		self.entity = None
+		# Default Public variables
 		self.symbol = "R"
 		self.direction = Direction.North
+		self.action = None
 
 		# Private variables
-		self._emit_event = ""
-		self._emit_data = {}
 		self._mass = 100.0
 		self._hp = 1000.0
-		self._cost = 0
-		self._ttr = 0
 
-	def run(self):
+	#
+	# Abstract - Configure robot once at creation. This dictates load out params
+	#
+	def configure(self):
 		pass
 
-	def _emit(self):
-		# Add cost to TTR
-		self._ttr += self._cost
-
-		if self._emit_event != "":
-			EventManager.Instance().fireEvent(self._emit_event, self._emit_data)
-
-	##################
-	# BATTLECOGS API #
-	##################
-
 	#
-	# Cancel all queued commands and just sit idle until the next tick
+	# Abstract - Runs everytime robot has an action to use
 	#
-	def doNothing(self):
-		self._emit_event = ""
-		self._emit_data = {}
-		self._cost = 0
-
-	#
-	# Shoot the currently loaded projectile in the forward facing direction
-	#
-	def shoot(self):
-		self._emit_event = "EVENT_ShootProjectile"
-		self._emit_data = {"origin" : self.entity.components["Transform2D"].position, "direction" : self.direction, "damage" : 20}
-		self._cost = 30
-
-	#
-	# Turn your robot to face a specified direction
-	#
-	def faceDirection(self, direction):
-		self.direction = direction
-		self._cost = int((self._hp / self._mass) / 4)
-
-	#
-	# Move your robot forward by one step (in the direction you are facing)
-	#
-	def moveForward(self):
-		self._emit_event = "EVENT_MoveEntity"
-		self._emit_data = {"entity" : self.entity, "vector2D" : Direction.getVector(self.direction)}
-		self._cost = self._hp / self._mass
+	def run(self):
+		pass
