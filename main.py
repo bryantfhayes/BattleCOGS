@@ -14,15 +14,13 @@ from components.Health import Health
 from components.Robot import Robot
 from components.Collider import *
 
-from bots.MyRobot import MyRobot
-
 from util.Vector2D import Vector2D
 import util.Colors as Colors
 
-import random
+import random, importlib, sys
 
 class BattleCOGS():
-    def __init__(self):
+    def __init__(self, bot1, bot2):
         pass
 
     def init(self):
@@ -119,7 +117,16 @@ class BattleCOGS():
 # @brief Entry Point
 # 
 def main():
-    battlecogs = BattleCOGS()
+    # Parse command line for robots
+    if len(sys.argv) != 3:
+        print("USAGE: python main.py [BOT1] [BOT2]")
+        exit()
+    bot1 = sys.argv[1]
+    bot2 = sys.argv[2]
+    b1 = importlib.import_module("bots." + bot1)
+    b2 = importlib.import_module("bots." + bot2)
+
+    battlecogs = BattleCOGS(bot1, bot2)
 
     # Setup game systems
     battlecogs.init()
@@ -127,8 +134,8 @@ def main():
     # DO GAME LOGIC STUFF #
 
     # Create a player
-    battlecogs.add_robot(MyRobot, random.randint(5, 10), random.randint(5, 10))
-    battlecogs.add_robot(MyRobot, random.randint(5, 10), random.randint(5, 10))
+    battlecogs.add_robot(getattr(b1, bot1), 15, 9)
+    battlecogs.add_robot(getattr(b2, bot2), 30, 9)
 
     # Load map
     battlecogs.load_map("assets/level_1.txt")

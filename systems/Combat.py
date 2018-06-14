@@ -33,8 +33,7 @@ class Combat(System):
             if attacked.components["Health"].health <= 0:
                 attacked.removable = True
 
-            EventManager.Instance().fireEvent("EVENT_StatsUpdated", [{"HP: {0}/{1}".format(attacked.components["Health"].health, attacked.components["Health"].maxHealth) : {"color" : Colors.gold}},
-                                                                 {"MP:  5/20" : {"color" : Colors.gold}}])
+            GameManager.Instance().message("{0} hit {1} for {2} damage ({3} / {4})".format(attacker, attacked, damage, attacked.components["Health"].health, attacked.components["Health"].maxHealth), Colors.red)
         
     def update(self, dt):
         pass

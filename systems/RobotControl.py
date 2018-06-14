@@ -11,6 +11,7 @@ from core.EntityManager import EntityManager
 from core.GameManager import GameManager
 
 from util.Vector2D import Vector2D
+from util.Direction import Direction
 import util.Colors as Colors
 
 from components.Collider import *
@@ -28,7 +29,7 @@ class RobotControl(System):
         damage = args["damage"]
 
         p = EntityManager.Instance().create_entity("+", z=9)
-        EntityManager.Instance().add_component(p, Transform2D(origin))
+        EntityManager.Instance().add_component(p, Transform2D(origin + Direction.getVector(direction)))
         EntityManager.Instance().add_component(p, Projectile(damage, direction))
         EntityManager.Instance().add_component(p, Collider(COLLIDER_PROJECTILE, COLLIDER_PLAYER | COLLIDER_WALL))
         GameManager.Instance().message("A bullet shot rings through the air!", Colors.yellow)
