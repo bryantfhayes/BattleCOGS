@@ -38,7 +38,7 @@ class Bot(object):
 	def doNothing(self):
 		self._emit_event = ""
 		self._emit_data = {}
-		self.cost = 0
+		self._cost = 0
 
 	#
 	# Shoot the currently loaded projectile in the forward facing direction
@@ -52,7 +52,6 @@ class Bot(object):
 	# Turn your robot to face a specified direction
 	#
 	def faceDirection(self, direction):
-		print("Facing direction: {}".format(direction))
 		self.direction = direction
 		self._cost = int((self._hp / self._mass) / 4)
 
@@ -60,7 +59,6 @@ class Bot(object):
 	# Move your robot forward by one step (in the direction you are facing)
 	#
 	def moveForward(self):
-		print("Moving robot forward!")
 		self._emit_event = "EVENT_MoveEntity"
 		self._emit_data = {"entity" : self.entity, "vector2D" : Direction.getVector(self.direction)}
 		self._cost = self._hp / self._mass

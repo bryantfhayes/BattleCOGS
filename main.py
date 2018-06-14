@@ -24,8 +24,6 @@ class BattleCOGS():
         pass
 
     def init(self):
-        self.robots = []
-
         GameManager.Instance().Init()
 
         # Apply all sub-systems to system manager
@@ -56,7 +54,6 @@ class BattleCOGS():
         EntityManager.Instance().add_component(robot, Collider(COLLIDER_PLAYER, COLLIDER_PLAYER | COLLIDER_WALL))
         EntityManager.Instance().add_component(robot, Robot(bot))
         GameManager.Instance().message("Bryant entered the strange room hesitantly.", Colors.red)
-        self.robots.append(robot)
 
         EventManager.Instance().fireEvent("EVENT_StatsUpdated", [{"HP: {0}/{1}".format(robot.components["Health"].health, robot.components["Health"].maxHealth) : {"color" : Colors.gold}},
                                                                  {"MP:  5/20" : {"color" : Colors.gold}}])
@@ -77,7 +74,7 @@ class BattleCOGS():
         char = args["char"]
         v = None
 
-        GameManager.Instance().message("Bryant pressed a button: {}".format(char), Colors.green)
+        GameManager.Instance().message("You pressed a button: {}".format(char), Colors.green)
 
         if char == "UP":
             v = Vector2D(0, -1)
@@ -88,12 +85,22 @@ class BattleCOGS():
         elif char == "DOWN":
             v = Vector2D(0, 1)
         elif char == "S":
-            for bot in self.robots:
-                EventManager.Instance().fireEvent("EVENT_ShootProjectile", {"origin" : bot.components["Transform2D"].position, "direction" : bot.components["Robot"].bot.direction, "damage" : 20})
+            for e, component in EntityManager.Instance().pairs_for_type(Robot):
+                EventManager.Instance().fireEvent("EVENT_ShootProjectile", {"origin" : e.components["Transform2D"].position, "direction" : e.components["Robot"].bot.direction, "damage" : 20})
                 return
-        elif char == "F":
-            for bot in self.robots:
-                EventManager.Instance().fireEvent("EVENT_FocusCameraOnEntity", bot)
+        elif char == "1":
+            robots = []
+            for e, component in EntityManager.Instance().pairs_for_type(Robot):
+                robots.append(e)
+            if len(robots) >= 1:
+                EventManager.Instance().fireEvent("EVENT_FocusCameraOnEntity", robots[0])
+            return
+        elif char == "2":
+            robots = []
+            for e, component in EntityManager.Instance().pairs_for_type(Robot):
+                robots.append(e)
+            if len(robots) >= 2:
+                EventManager.Instance().fireEvent("EVENT_FocusCameraOnEntity", robots[1])
             return
         elif char == "G":
             EventManager.Instance().fireEvent("EVENT_FocusCameraOnEntity", None)
@@ -101,8 +108,8 @@ class BattleCOGS():
         else:
             return
 
-        for bot in self.robots:
-            EventManager.Instance().fireEvent("EVENT_MoveEntity", {"entity" : bot, "vector2D" : v})
+        for e, component in EntityManager.Instance().pairs_for_type(Robot):
+            EventManager.Instance().fireEvent("EVENT_MoveEntity", {"entity" : e, "vector2D" : v})
 
     #
     # @brief Quit the game

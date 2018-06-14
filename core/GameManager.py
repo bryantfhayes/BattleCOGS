@@ -19,7 +19,7 @@ class GameManager(object):
         self.updateBuffer = 0
         self.arr = []
 
-    def Init(self, tps=20):
+    def Init(self, tps=100):
         # Setup links between the various managers
         SystemManager.Instance().Init()
         EntityManager.Instance().Init()

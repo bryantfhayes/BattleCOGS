@@ -1,0 +1,10 @@
+cffi==1.11.2
+enum==0.4.6
+macholib==1.8
+numpy==1.13.3
+pip==9.0.1
+pyserial==3.4
+requests==2.18.4
+setuptools==37.0.0
+six==1.11.0
+tdl==4.1.1

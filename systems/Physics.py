@@ -22,14 +22,14 @@ class Physics(System):
 		EventManager.Instance().subscribe("EVENT_MoveEntity", self.attemptMove)
 
 	def collision(self, a, b):
-		msg = "{0} collided with {1}".format(a, b)
+		#msg = "{0} collided with {1}".format(a, b)
 		
 		# If the initiator is a projectile, apply damage to what it hits
 		if a.hasComponent(Projectile):
 			EventManager.Instance().fireEvent("EVENT_DealDamage", {"attacker" : a, "attacked" : b, "damage" : a.components["Projectile"].damage})
 			a.removable = True
 
-		GameManager.Instance().message(msg, color=Colors.red)
+		#GameManager.Instance().message(msg, color=Colors.red)
 
 	def attemptMove(self, args):
 		entity = args["entity"]
