@@ -4,6 +4,7 @@ from core.EventManager import EventManager
 from core.Singleton import Singleton
 
 from components.Transform2D import Transform2D
+from components.Health import Health
 from components.Collider import *
 from components.Collider import Collider
 
@@ -15,15 +16,17 @@ import time
 @Singleton
 class GameManager(object):
     def __init__(self):
-        pass
+        self.updateBuffer = 0
+        self.arr = []
 
-    def Init(self):
+    def Init(self, tps=10):
         # Setup links between the various managers
         SystemManager.Instance().Init()
         EntityManager.Instance().Init()
         EventManager.Instance().Init()
 
-        self.lastUpdated = 0
+        self.tps = tps
+        self.lastUpdated = time.time()
         self.running = True
         self.message_log = []
 
@@ -35,8 +38,9 @@ class GameManager(object):
             for col in range(0, len(mapArr[0])):
                 entity = EntityManager.Instance().create_entity(mapArr[row][col])
                 EntityManager.Instance().add_component(entity, Transform2D(Vector2D(col, row)))
+                EntityManager.Instance().add_component(entity, Health())
                 if entity.symbol == "#":
-                    EntityManager.Instance().add_component(entity, Collider(COLLIDER_WALL, COLLIDER_PLAYER | COLLIDER_WALL))
+                    EntityManager.Instance().add_component(entity, Collider(COLLIDER_WALL, COLLIDER_PLAYER | COLLIDER_WALL | COLLIDER_PROJECTILE))
 
     #
     # @brief Send notification containing the latest message log
@@ -52,7 +56,12 @@ class GameManager(object):
         while (self.running):
             currentTime = time.time()
             delta = currentTime - self.lastUpdated
+            self.updateBuffer += delta
             self.lastUpdated = currentTime
-            SystemManager.Instance().update(delta)
+
+            # Update at designated interval
+            if self.updateBuffer >= (1.0 / self.tps):
+                SystemManager.Instance().update(self.updateBuffer)
+                self.updateBuffer = 0
 
 

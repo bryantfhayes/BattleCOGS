@@ -37,7 +37,10 @@ class SystemManager(object):
         self._systems.append(system_instance)
 
         system_instance.priority = priority
+
+        # Sorts into ascending list, reverse so that higher number means more important
         self._systems.sort(key=lambda x: x.priority)
+        self._systems = self._systems[::-1]
 
     def remove_system(self, system_type):
         system = self._system_types[system_type]
@@ -49,10 +52,10 @@ class SystemManager(object):
     def update(self, dt):
 
         # Iterating over a list of systems instead of values in a dictionary is
-        # noticeably faster. We maintain a list in addition to a dictionary
+        # noticeably faster. I maintain a list in addition to a dictionary
         # specifically for this purpose.
         #
-        # Though initially we had the entity manager being passed through to
+        # Though initially I had the entity manager being passed through to
         # each update() method, this turns out to cause quite a large
         # performance penalty. So now it is just set on each system.
         for system in self._systems:

@@ -1,6 +1,8 @@
 from core.Entity import Entity
 from core.Singleton import Singleton
 
+from core.Exceptions import *
+
 import six
 
 @Singleton
@@ -50,6 +52,15 @@ class EntityManager(object):
             return six.iteritems(self._database[component_type])
         except KeyError:
             return six.iteritems({})
+
+    def list_entities(self):
+        entities = []
+        for comp_type in list(self._database.keys()):
+            for entity in self._database[comp_type]:
+                entities.append(entity)
+
+        entities = list(set(entities))
+        return entities
 
     # Return the instance of ``component_type`` for the entity from the database
     def component_for_entity(self, entity, component_type):

@@ -2,9 +2,7 @@ from components.Component import Component
 
 from core.EventManager import EventManager
 
-class Health(Component):
-	def __init__(self):
+class Robot(Component):
+	def __init__(self, bot):
 		Component.__init__(self)
-		self.maxHealth = 100
-		self.health = 100
-		
+		self.bot = bot

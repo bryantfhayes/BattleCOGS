@@ -1,6 +1,8 @@
 from core.Events import *
 from core.Singleton import Singleton
 
+from core.Exceptions import *
+
 @Singleton
 class EventManager(object):
 	def __init__(self):

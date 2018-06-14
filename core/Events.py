@@ -6,5 +6,7 @@ EVENTS = [
 	"EVENT_FocusCameraOnEntity",
 	"EVENT_StatsUpdated",
 	"EVENT_ConsoleMessageAdded",
-	"EVENT_PlayerDied"
+	"EVENT_PlayerDied",
+	"EVENT_ShootProjectile",
+	"EVENT_DealDamage"
 ]
