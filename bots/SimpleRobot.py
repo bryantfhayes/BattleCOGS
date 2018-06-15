@@ -8,15 +8,15 @@ class SimpleRobot(Bot):
 		self.dir_index = 0
 		self.dirs = [Direction.North, Direction.East, Direction.South, Direction.West]
 
-	def run(self):
+	def run(self, state):
 		if self.turn == False:
-			self.moveForward()
+			self.action.moveForward()
 		else:
-			self.faceDirection(self.dirs[self.dir_index])
+			self.action.faceDirection(self.dirs[self.dir_index])
 			self.dir_index += 1
 			if self.dir_index == 4:
 				self.dir_index = 0
-				self.shoot()
+				self.action.shoot()
 
 		self.turn = not self.turn
 

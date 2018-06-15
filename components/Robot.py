@@ -21,6 +21,16 @@ class Robot(Component):
 		if self._emit_event != "":
 			EventManager.Instance().fireEvent(self._emit_event, self._emit_data)
 
+	def _getview(self):
+		pass
+
+	def _apiCallBegin(self):
+		pass
+
+	def _apiCallEnd(self):
+		self._emit_event = ""
+		self._emit_data = {}
+
 	##################
 	# BATTLECOGS API #
 	##################
@@ -29,29 +39,37 @@ class Robot(Component):
 	# Cancel all queued commands and just sit idle until the next tick
 	#
 	def doNothing(self):
+		self._apiCallBegin()
 		self._emit_event = ""
 		self._emit_data = {}
 		self._cost = 0
+		self._apiCallEnd()
 
 	#
 	# Shoot the currently loaded projectile in the forward facing direction
 	#
 	def shoot(self):
+		self._apiCallBegin()
 		self._emit_event = "EVENT_ShootProjectile"
 		self._emit_data = {"origin" : self.entity.components["Transform2D"].position, "direction" : self.bot.direction, "damage" : 20}
 		self._cost = 30
+		self._apiCallEnd()
 
 	#
 	# Turn your robot to face a specified direction
 	#
 	def faceDirection(self, direction):
+		self._apiCallBegin()
 		self.direction = direction
 		self._cost = int((self.bot._hp / self.bot._mass) / 4)
+		self._apiCallEnd()
 
 	#
 	# Move your robot forward by one step (in the direction you are facing)
 	#
 	def moveForward(self):
+		self._apiCallBegin()
 		self._emit_event = "EVENT_MoveEntity"
 		self._emit_data = {"entity" : self.entity, "vector2D" : Direction.getVector(self.bot.direction)}
 		self._cost = self.bot._hp / self.bot._mass
+		self._apiCallEnd()

@@ -23,5 +23,5 @@ class Bot(object):
 	#
 	# Abstract - Runs everytime robot has an action to use
 	#
-	def run(self):
+	def run(self, state):
 		pass

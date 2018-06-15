@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+    <head>
+        <title>BattleCOGS Match Viewer</title>
+        <script src="https://ondras.github.io/rot.js/rot.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='matchviewer.js') }}"></script>
+    </head>
+    <body onload="Game.init()">
+        <h1>{{ match }}</h1>
+    </body>
+</html>

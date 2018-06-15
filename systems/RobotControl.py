@@ -29,16 +29,25 @@ class RobotControl(System):
         damage = args["damage"]
 
         p = EntityManager.Instance().create_entity("+", z=9)
-        EntityManager.Instance().add_component(p, Transform2D(origin + Direction.getVector(direction)))
+        EntityManager.Instance().add_component(p, Transform2D(origin))
         EntityManager.Instance().add_component(p, Projectile(damage, direction))
         EntityManager.Instance().add_component(p, Collider(COLLIDER_PROJECTILE, COLLIDER_PLAYER | COLLIDER_WALL))
         GameManager.Instance().message("A bullet shot rings through the air!", Colors.yellow)
+
+    def getCurrentGameStateForRobot(self, robot):
+        currentGameState = {}
+
+        # Collect information about the current game state
+        currentGameState["position"] = robot.entity.components["Transform2D"].position
+        currentGameState["view"] = robot._getview()
+
+        return dict(currentGameState)
 
     def update(self, dt):
         # Iterate over every robot
         for e, robot in EntityManager.Instance().pairs_for_type(Robot):
             if robot._ttr <= 0:
-                robot.bot.run()
+                robot.bot.run(self.getCurrentGameStateForRobot(robot))
                 robot._emit()
             else:
                 robot._ttr -= 1

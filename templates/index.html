@@ -26,7 +26,23 @@
       </div>
 
       <button class="btn btn-sm btn-primary btn-block" type="submit" formaction="/upload">UPLOAD</button>
+
+      <br><br>
+
+      <h1>BattleCOGS Match Viewer</h1>
+
+      {% for index in range(matches|count) %}
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="match" id="optionsRadios1" value={{ matches[index] }} checked>
+                {{ matches[index] }}
+              </label>
+            </div>
+      {% endfor %}
+
+      <button class="btn btn-sm btn-primary btn-block" type="submit" formaction="/play">PLAY</button>
     </form>
+  
   </body>
 </html>
 

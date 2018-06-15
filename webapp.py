@@ -23,6 +23,13 @@ def _upload(request):
 
     return "UNKNOWN ERROR", 400
 
+def get_matches():
+    matches = []
+    for filename in os.listdir("matches"):
+        if filename.endswith(".match"): 
+            matches.append(os.path.join("matches", filename))
+    return matches
+
 @app.route('/api/upload', methods=['POST'])
 def api_upload_file():
     return _upload(request)
@@ -31,12 +38,22 @@ def api_upload_file():
 def upload_file():
     return _upload(request)
 
+@app.route('/play', methods=['POST'])
+def play():
+    if 'match' not in request.form:
+        return "MISSING MATCH FILE", 400
+
+    match = request.form["match"]
+
+    return Response(render_template('playback.html', match=match, mimetype='text/html'))
+
 #
 # Show main home page, where users can access submission forms 
 #
 @app.route('/', methods=['GET'])
 def index():
-    return Response(render_template('index.html', mimetype='text/html'))
+    matches = get_matches()
+    return Response(render_template('index.html', matches=matches, mimetype='text/html'))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")

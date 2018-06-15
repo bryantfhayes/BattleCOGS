@@ -9,7 +9,8 @@ class MyRobot(Bot):
 	def configure(self):
 		return
 
-	def run(self):
+	def run(self, state):
+		print(state["position"])
 		self.action.shoot()
 		return
 
