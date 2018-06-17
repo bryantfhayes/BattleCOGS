@@ -10,8 +10,11 @@ class MyRobot(Bot):
 		return
 
 	def run(self, state):
-		print(state["position"])
-		self.action.shoot()
+		scan = state["scan"]
+		print("----------------------")
+		for s in scan:
+			print(s)
+		#self.action.shoot()
 		return
 
 		

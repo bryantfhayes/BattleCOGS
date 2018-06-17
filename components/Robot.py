@@ -1,6 +1,7 @@
 from components.Component import Component
 
 from core.EventManager import EventManager
+from core.GameManager import GameManager
 from util.Vector2D import Vector2D
 from util.Direction import Direction
 
@@ -21,8 +22,31 @@ class Robot(Component):
 		if self._emit_event != "":
 			EventManager.Instance().fireEvent(self._emit_event, self._emit_data)
 
-	def _getview(self):
-		pass
+	#
+	# Return a scan of the surrounding area, range depends on the range of the robot scanning
+	#
+	def _scan(self):
+		scan_results = []
+		GameManager.Instance().refreshCachedMap()
+		cached_map = list(GameManager.Instance().cached_map)
+		rng = self.bot._scan_range
+		posX = self.entity.components["Transform2D"].position.x
+		posY = self.entity.components["Transform2D"].position.y
+		lowerX = max(posX - rng, 0)
+		lowerY = max(posY - rng, 0)
+		print(GameManager.Instance().map_size_x, GameManager.Instance().map_size_y, self.entity.components["Transform2D"].position.y)
+		upperX = min(posX + rng, GameManager.Instance().map_size_x-1)
+		upperY = min(posY + rng, GameManager.Instance().map_size_y-1)
+		for col in xrange(lowerX, upperX + 1):
+			for row in xrange(lowerY, upperY + 1):
+				# TODO: COuld be a bug because this assumes no entity can be found on the same tile as your robot.
+				if len(cached_map[col][row]) > 0:
+					if self.entity in cached_map[col][row]:
+						cached_map[col][row].remove(self.entity)
+						continue
+					scan_results.append((Vector2D(row, col), cached_map[col][row]))
+
+		return scan_results
 
 	def _apiCallBegin(self):
 		pass

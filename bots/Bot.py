@@ -13,6 +13,7 @@ class Bot(object):
 		# Private variables
 		self._mass = 100.0
 		self._hp = 1000.0
+		self._scan_range = 3
 
 	#
 	# Abstract - Configure robot once at creation. This dictates load out params

@@ -19,6 +19,8 @@ import util.Colors as Colors
 
 import random, importlib, sys
 
+player = None
+
 class BattleCOGS():
     def __init__(self, bot1, bot2):
         pass
@@ -57,6 +59,7 @@ class BattleCOGS():
 
         EventManager.Instance().fireEvent("EVENT_StatsUpdated", [{"HP: {0}/{1}".format(robot.components["Health"].health, robot.components["Health"].maxHealth) : {"color" : Colors.gold}},
                                                                  {"MP:  5/20" : {"color" : Colors.gold}}])
+        return robot
 
     def load_map(self, filename):
         mapArr = []
@@ -124,6 +127,8 @@ class BattleCOGS():
 # @brief Entry Point
 # 
 def main():
+    global player
+
     # Parse command line for robots
     if len(sys.argv) != 3:
         print("USAGE: python main.py [BOT1] [BOT2]")

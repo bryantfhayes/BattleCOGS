@@ -39,7 +39,7 @@ class RobotControl(System):
 
         # Collect information about the current game state
         currentGameState["position"] = robot.entity.components["Transform2D"].position
-        currentGameState["view"] = robot._getview()
+        currentGameState["scan"] = robot._scan()
 
         return dict(currentGameState)
 

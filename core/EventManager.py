@@ -31,6 +31,8 @@ class EventManager(object):
 			self._events[event].remove(fn)
 
 	def fireEvent(self, event, args):
+		return_arr = []
+
 		# Confirm event exists
 		if event not in self._events:
 			return
@@ -38,4 +40,6 @@ class EventManager(object):
 		# Fire all registered functions for this event
 		triggeredEvent = self._events[event]
 		for fn in triggeredEvent:
-			fn(args)
+			return_arr.append(fn(args))
+
+		return return_arr
